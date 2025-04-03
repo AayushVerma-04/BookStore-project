@@ -1,98 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Spinner from "../components/Spinner";
-import { Link } from "react-router-dom";
-import {
-  MdOutlineAddBox,
-  MdOutlineSearch,
-  MdOutlineSearchOff
-} from "react-icons/md";
-import BooksTable from "../components/home/BooksTable";
-import BooksCard from "../components/home/BooksCard";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Home = ({ showType, showChange }) => {
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [searchBarText, setSearchBarText] = useState("");
-  const [showCancelSearch, setCancelSearch] = useState(false);
-  const booksRef = useRef([]);
-
-  const searchHandler = (e) => {
-    if (searchBarText) {
-      setCancelSearch(true);
-      const result = booksRef.current.filter(book => book.title.toLowerCase() === searchBarText.toLowerCase());
-      setBooks(result);
-    } else {
-      setCancelSearch(false);
-      setBooks(booksRef.current);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("http://localhost:5555/api/books")
-      .then((response) => {
-        setBooks(response.data.data);
-        booksRef.current = response.data.data;
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  }, []);
+const Home = () => {
+  const nav = useNavigate();
 
   return (
-    <div className="p-4">
-      <div className="flex justify-center items-center gap-x-4">
+    <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+      <div className="text-center">
+        <h1 className="text-5xl font-bold mb-4 drop-shadow-lg">📚 Welcome to the Library</h1>
+        <p className="text-lg opacity-90">Easily mantain a record of all your books</p>
+      </div>
+
+      <div className="mt-8 flex gap-4">
         <button
-          className={`bg-sky-400 hover:bg-sky-600 px-4 py-1 rounded-lg ${
-            showType === "table" && "border-3"
-          }`}
-          onClick={() => showChange("table")}
+          className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-full shadow-lg hover:scale-105 hover:bg-blue-100 transition-all duration-300"
+          onClick={() => nav('/login')}
         >
-          Table
+          Login
         </button>
         <button
-          className={`bg-sky-400 hover:bg-sky-600 px-4 py-1 rounded-lg ${
-            showType === "card" && "border-3"
-          }`}
-          onClick={() => showChange("card")}
+          className="px-6 py-3 bg-white text-purple-600 font-semibold rounded-full shadow-lg hover:scale-105 hover:bg-purple-100 transition-all duration-300"
+          onClick={() => nav('/signup')}
         >
-          Card
+          Signup
         </button>
       </div>
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl my-8 font-serif">Books List</h1>
-        <Link to="/books/create">
-          <MdOutlineAddBox className="text-sky-500 text-4xl hover:text-sky-800" />
-        </Link>
-      </div>
-      <div className="flex">
-        <input
-          value={searchBarText}
-          placeholder="Search for a book"
-          className="bg-blue-200 mx-3 outline-2 rounded-lg p-1 w-1.5xl text-black pl-2"
-          onChange={(e) => setSearchBarText(e.target.value)}
-          onSubmit={searchHandler}
-        />
-        <MdOutlineSearch
-          className="size-9 hover:cursor-pointer"
-          onClick={searchHandler}
-        />
-        {showCancelSearch && (
-          <MdOutlineSearchOff className="size-9 ml-2 hover:cursor-pointer" onClick={()=>{setSearchBarText(''); setCancelSearch(false); setBooks(booksRef.current)}}/>
-        )}
-      </div>
-      <br />
-      {loading ? (
-        <Spinner />
-      ) : showType === "table" ? (
-        <BooksTable books={books} />
-      ) : (
-        <BooksCard books={books} />
-      )}
+
     </div>
   );
 };

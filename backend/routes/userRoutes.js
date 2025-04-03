@@ -16,9 +16,9 @@ userRouter.post("/signup", async (req, res) => {
     const user = await User.signup(email, password);
     const token = createToken(user._id);
 
-    res.status(200).send({ email, token });
+    res.status(200).send({ email, id:user._id, token });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -29,7 +29,7 @@ userRouter.post("/login", async (req, res) => {
     const user = await User.login(email, password);
     const token = createToken(user._id);
 
-    res.status(200).send({ email, token });
+    res.status(200).send({ email, id: user._id, token });
   } catch (error) {
     res.status(400).send({ error: error.message });
   }

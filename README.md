@@ -5,7 +5,6 @@ A Full-Stack Book Management App built with React, Node.js, Express, and MongoDB
 ✨ Features
 - ✅ User Authentication (Login, Signup, JWT Auth)
 - ✅ CRUD Operations (Add, Edit, Delete Books)
-- ✅ Advanced Search & Filtering
 - ✅ Responsive & Modern UI
 - ✅ Protected Routes (Only logged-in users can manage books)
 

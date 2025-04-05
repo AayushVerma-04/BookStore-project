@@ -50,5 +50,5 @@ Usage
 2. Start the frontend application
     ```sh
     cd frontend
-    npm start
+    npm run dev
     ```
